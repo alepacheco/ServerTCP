@@ -16,16 +16,16 @@ import (
 
 func main() {
   // Create a server instance
-	server := ServerTCP.NewServer()
+  server := ServerTCP.NewServer()
   
   // Start listening for new connections in port 6666 and pass a listening function
-	go server.Listen(":6666", listenFunc)
+  go server.Listen(":6666", listenFunc)
   
   // Read for clients messafes and passes a read function
-	go server.Read(readFun)
+  go server.Read(readFun)
 	
-  
-  server.Broadcast("")
+  // Broadcast a message to all clients
+  server.Broadcast("Hello clients")
 
 }
 
