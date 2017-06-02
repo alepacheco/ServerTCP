@@ -6,8 +6,8 @@ import (
 )
 
 type Client struct {
-	reader    *bufio.Reader
-	writer   *bufio.Writer
+	Reader    *bufio.Reader
+	Writer   *bufio.Writer
 	readChannel    chan *ClientMessage
 }
 type ClientMessage struct {
@@ -17,8 +17,8 @@ type ClientMessage struct {
 
 func (client *Client) Listen() {
 	for {
-		line, _ := client.reader.ReadString('\n')
-		line = line.strip()
+		line, _ := client.Reader.ReadString('\n')
+		
 		message := &ClientMessage{
 			Client: client,
 			Data:	line,
@@ -28,8 +28,8 @@ func (client *Client) Listen() {
 }
 
 func (client *Client) Write(data string) {
-	client.writer.WriteString(data)
-	client.writer.Flush()
+	client.Writer.WriteString(data)
+	client.Writer.Flush()
 }
 
 func NewClient(connection net.Conn, server *Server) *Client {
@@ -37,8 +37,8 @@ func NewClient(connection net.Conn, server *Server) *Client {
 	reader := bufio.NewReader(connection)
 
 	client := &Client {
-		reader: reader,
-		writer: writer,
+		Reader: reader,
+		Writer: writer,
 		readChannel: server.channel,
 	}
 	go client.Listen()

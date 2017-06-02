@@ -6,20 +6,20 @@ type FunctionListen func(net.Conn)
 type FunctionRead func(ClientMessage)
 
 type Server struct {
-	clients []*Client
+	Clients []*Client
 	channel chan *ClientMessage
 }
 
 // Broadcast sends a string to all clints outgoing chain
 func (server *Server) Broadcast(data string) {
-	for _, client := range server.clients {
+	for _, client := range server.Clients {
 		client.Write(data)
 	}
 }
 
 func (server *Server) Join(connection net.Conn) {
 	client := NewClient(connection, server)
-	server.clients = append(server.clients, client)
+	server.Clients = append(server.Clients, client)
 	//go func() { for { server.incoming <- <-client.incoming } }()
 }
 
@@ -41,7 +41,7 @@ func (server *Server) Read(fun FunctionRead) {
 
 func NewServer() *Server {
 	server := &Server{
-		clients: make([]*Client, 0),
+		Clients: make([]*Client, 0),
 		channel: make(chan *ClientMessage),
 	}
 	return server
